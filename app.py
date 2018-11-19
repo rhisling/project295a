@@ -1,6 +1,5 @@
 import argparse
 import json
-import random
 
 import tensorflow as tf
 from flask import Flask, request
@@ -16,6 +15,10 @@ def hello_world():
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
+    """
+    input: json data of 23 paramteres
+    :return: the predicted power
+    """
     data = request.data
     dataDict = json.loads(data)
     print(dataDict)
@@ -49,14 +52,32 @@ def predict():
     for i in dataDict:
         x = list()
         x.append(i["cpu_frequency"])
-        x.append(i["no_network_connection"])
+        x.append(i["no_network_connections"])
         x.append(i["time_spent_user"])
         x.append(i["time_spent_system"])
-
+        x.append(i['time_spent_idle'])
+        x.append(i["time_spent_io"])
+        x.append(i["cpu_percentage"])
+        x.append(i["ctx_switches"])
+        x.append(i["interrupts"])
+        x.append(i["software_interrupts"])
+        x.append(i["system_calls"])
+        x.append(i["percent_virtual_memory"])
+        x.append(i["cached_memory_changed"])
+        x.append(i["shared_memory_changed"])
+        x.append(i["swap_percentage"])
+        x.append(i["swap_in_bytes"])
+        x.append(i["swap_out_bytes"])
+        x.append(i["bytes_read"])
+        x.append(i["bytes_write"])
+        x.append(i["bytes_sent"])
+        x.append(i["bytes_received"])
+        x.append(i["no_processes"])
+        x.append(i["rapl_value"])
         final_res.append(x)
 
-    my_randoms = [random.randrange(1, 101, 1) for _ in range(23)]
-    ##y_out = [[]]
+    # my_randoms = [random.randrange(1, 101, 1) for _ in range(23)]
+    # ##y_out = [[]]
     with tf.Session(graph=graph) as sess:
         y_out = sess.run(y1, ({
             x1: final_res
