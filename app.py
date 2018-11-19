@@ -1,9 +1,9 @@
 import argparse
 import json
-
-
+import random
+import pandas as pd
 import tensorflow as tf
-from flask import Flask, request, render_template
+from flask import Flask, request
 
 from load import load_graph
 
@@ -14,31 +14,32 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route('/api/predict',methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
 def predict():
     data = request.data.decode("utf-8")
-    if data == "":
-        params = request.form
-        x_in = json.loads(params['x'])
-    else:
-        params = json.loads(data)
-        x_in = params['x']
+    # if data == "":
+    #     params = request.form
+    #     x_in = json.loads(params['x'])
+    # else:
+    #     params = json.loads(data)
+    #     x_in = params['x']
 
     data = {
         "cpu_frequency": 13.56,
         "cpu_gain": 15.56
     }
     x = []
-    for key, value in data:
-        x.append(value)
-
+    x.append(data["cpu_frequency"])
+    x.append(data["cpu_gain"])
+    my_randoms = [random.randrange(1, 101, 1) for _ in range(23)]
+    ##y_out = [[]]
     with tf.Session(graph=graph) as sess:
         y_out = sess.run(y1, ({
-            x1: [x]
+            x1: [my_randoms]
         }))
-    json_data = json.dumps()
-    return
 
+    json_data = json.dumps({"power": y_out.tolist()})
+    return json_data
 
 
 if __name__ == '__main__':
