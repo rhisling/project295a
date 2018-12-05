@@ -8,10 +8,6 @@ from load import load_graph
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
@@ -56,21 +52,25 @@ def predict():
         x.append(i["time_spent_user"])
         x.append(i["time_spent_system"])
         x.append(i['time_spent_idle'])
+
         x.append(i["time_spent_io"])
         x.append(i["cpu_percentage"])
         x.append(i["ctx_switches"])
         x.append(i["interrupts"])
         x.append(i["software_interrupts"])
+
         x.append(i["system_calls"])
         x.append(i["percent_virtual_memory"])
         x.append(i["cached_memory_changed"])
         x.append(i["shared_memory_changed"])
         x.append(i["swap_percentage"])
+
         x.append(i["swap_in_bytes"])
         x.append(i["swap_out_bytes"])
         x.append(i["bytes_read"])
         x.append(i["bytes_write"])
         x.append(i["bytes_sent"])
+
         x.append(i["bytes_received"])
         x.append(i["no_processes"])
         x.append(i["rapl_value"])
@@ -89,7 +89,7 @@ def predict():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--frozen_model_filename", default="results/frozen_model.pb", type=str,
+    parser.add_argument("--frozen_model_filename", default="results/frozen_graph.pb", type=str,
                         help="Frozen model file to import")
     args = parser.parse_args()
     graph = load_graph(args.frozen_model_filename)
