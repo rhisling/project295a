@@ -1,7 +1,7 @@
 import argparse
 import json
-import numpy as np
 
+import numpy as np
 import tensorflow as tf
 from flask import Flask, request
 
@@ -115,4 +115,4 @@ if __name__ == '__main__':
     x1 = graph.get_tensor_by_name('prefix/Input:0')
     y1 = graph.get_tensor_by_name('prefix/add:0')
 
-    app.run()
+    app.run(host='130.65.159.84')
