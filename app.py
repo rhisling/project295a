@@ -10,6 +10,11 @@ from load import load_graph
 app = Flask(__name__)
 
 
+@app.route('/', methods=['GET'])
+def hello():
+    return "Inference Model is working"
+
+
 @app.route('/api/predict', methods=['POST'])
 def predict():
     """
@@ -115,4 +120,4 @@ if __name__ == '__main__':
     x1 = graph.get_tensor_by_name('prefix/Input:0')
     y1 = graph.get_tensor_by_name('prefix/add:0')
 
-    app.run(host='130.65.159.84')
+    app.run(debug=True, host='130.65.159.84')
